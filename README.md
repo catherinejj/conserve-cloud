@@ -68,12 +68,11 @@ L'application est accessible sur **http://localhost:4200**.
 ---
 
 ## 🎯 Fonctionnalités prévues
-
-- [ ] Ajouter une conserve à son placard (nom, type, date de péremption, quantité)
-- [ ] Visualiser l'ensemble du stock
-- [ ] Modifier ou supprimer une conserve
-- [ ] Alerte sur les conserves bientôt périmées
-- [ ] (Bonus) Liste de courses générée automatiquement
+- [ ] Créer un compte;
+- [ ] Ajouter et modifer son avatar;
+- [ ] Ajouter une conserve à son placard;
+- [ ] Visualiser l'ensemble du stock;
+- [ ] Modifier ou supprimer une conserve.
 
 ---
 
