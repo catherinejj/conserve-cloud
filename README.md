@@ -40,7 +40,7 @@ conserve-cloud/
 
 ### Prérequis
 
-- [Node.js](https://nodejs.org/) (v18 ou +)
+- [Node.js](https://nodejs.org/) (v22 ou +)
 - [Angular CLI](https://angular.dev/tools/cli) : `npm install -g @angular/cli`
 - [NestJS CLI](https://docs.nestjs.com/cli/overview) : `npm install -g @nestjs/cli`
 - [PostgreSQL](https://www.postgresql.org/download/)
