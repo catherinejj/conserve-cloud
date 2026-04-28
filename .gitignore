@@ -1,0 +1,53 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VSCode (keep shared config if needed)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+########################################
+# BACKEND (NestJS / Node / Prisma)
+########################################
+
+back-conserve-cloud/node_modules/
+back-conserve-cloud/dist/
+back-conserve-cloud/build/
+back-conserve-cloud/coverage/
+back-conserve-cloud/.nyc_output/
+back-conserve-cloud/generated/prisma/
+back-conserve-cloud/.env
+back-conserve-cloud/.env.*
+back-conserve-cloud/.vscode/*
+back-conserve-cloud/.codex
+
+########################################
+# FRONTEND (Angular)
+########################################
+
+front-conserve-cloud/node_modules/
+front-conserve-cloud/dist/
+front-conserve-cloud/out-tsc/
+front-conserve-cloud/tmp/
+front-conserve-cloud/coverage/
+front-conserve-cloud/.angular/cache/
+front-conserve-cloud/.env
+front-conserve-cloud/.env.*
+front-conserve-cloud/.vscode/*
+front-conserve-cloud/.codex
+
+# Angular environment files
+# front-conserve-cloud/src/environments/environment*.ts
+front-conserve-cloud/src/environments/environment.prod.ts
