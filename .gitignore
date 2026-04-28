@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+#Version de node
+.nvmrc
+
 # IDEs
 .idea/
 .project
