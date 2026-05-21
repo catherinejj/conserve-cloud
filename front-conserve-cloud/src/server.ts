@@ -13,18 +13,24 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+const backendUrl = process.env['BACKEND_URL'] || 'http://backend';
 
 /**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/**', (req, res) => {
- *   // Handle API request
- * });
- * ```
+ * Proxy API calls to the backend service inside the Kubernetes namespace.
  */
+app.use('/api', async (req, res, next) => {
+  try {
+    const targetUrl = new URL(req.originalUrl, backendUrl);
+    const response = await fetch(targetUrl, {
+      method: req.method,
+    });
+
+    response.headers.forEach((value, key) => res.setHeader(key, value));
+    res.status(response.status).send(Buffer.from(await response.arrayBuffer()));
+  } catch (error) {
+    next(error);
+  }
+});
 
 /**
  * Serve static files from /browser
