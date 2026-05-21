@@ -7,7 +7,7 @@ spec:
   parentRefs:
     - name: tp-gateway
   hostnames:
-    - "web-cath.10.108.49.188.nip.io"
+    - "web-cath.10.108.143.255.nip.io"
   rules:
     - matches:
         - path:
