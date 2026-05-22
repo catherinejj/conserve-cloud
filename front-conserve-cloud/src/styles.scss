@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  color-scheme: light;
+  --color-bg: #ffffff;
+  --color-page: #f7fbf8;
+  --color-surface: #ffffff;
+  --color-text: #17231b;
+  --color-muted: #53635a;
+  --color-border: #c9d8ce;
+  --color-green: #2f6f45;
+  --color-green-dark: #245637;
+  --color-green-soft: #dcefe3;
+  --color-focus: #0b6b3a;
+  --color-error: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--color-green-dark);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: #153d27;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}

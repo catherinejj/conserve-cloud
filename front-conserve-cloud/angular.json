@@ -75,7 +75,8 @@
               "buildTarget": "front-conserve-cloud:build:production"
             },
             "development": {
-              "buildTarget": "front-conserve-cloud:build:development"
+              "buildTarget": "front-conserve-cloud:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -106,5 +107,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "60f03b02-c5fc-4449-b447-117fcb70d15a"
   }
 }

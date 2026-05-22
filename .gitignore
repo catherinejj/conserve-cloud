@@ -2,7 +2,6 @@
 .DS_Store
 Thumbs.db
 
-#Version de node
 .nvmrc
 
 # IDEs
@@ -25,32 +24,28 @@ Thumbs.db
 # BACKEND (NestJS / Node / Prisma)
 ########################################
 
-back-conserve-cloud/node_modules/
-back-conserve-cloud/dist/
-back-conserve-cloud/build/
-back-conserve-cloud/coverage/
-back-conserve-cloud/.nyc_output/
-back-conserve-cloud/generated/prisma/
-back-conserve-cloud/.env
-back-conserve-cloud/.env.*
-back-conserve-cloud/.vscode/*
-back-conserve-cloud/.codex
+back-app-gta/node_modules/
+back-app-gta/dist/
+back-app-gta/build/
+back-app-gta/coverage/
+back-app-gta/.nyc_output/
+back-app-gta/generated/prisma/
+back-app-gta/.env
+back-app-gta/.env.*
 
 ########################################
 # FRONTEND (Angular)
 ########################################
 
-front-conserve-cloud/node_modules/
-front-conserve-cloud/dist/
-front-conserve-cloud/out-tsc/
-front-conserve-cloud/tmp/
-front-conserve-cloud/coverage/
-front-conserve-cloud/.angular/cache/
-front-conserve-cloud/.env
-front-conserve-cloud/.env.*
-front-conserve-cloud/.vscode/*
-front-conserve-cloud/.codex
+front-app-gta/node_modules/
+front-app-gta/dist/
+front-app-gta/out-tsc/
+front-app-gta/tmp/
+front-app-gta/coverage/
+front-app-gta/.angular/cache/
+front-app-gta/.env
+front-app-gta/.env.*
 
 # Angular environment files
-# front-conserve-cloud/src/environments/environment*.ts
-front-conserve-cloud/src/environments/environment.prod.ts
+# front-app-gta/src/environments/environment*.ts
+front-app-gta/src/environments/environment.prod.ts

@@ -1,0 +1,120 @@
+<div class="page">
+
+  <!-- FILTRES -->
+  <div class="filters">
+
+    <div class="filter-search">
+      <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9 3a6 6 0 100 12A6 6 0 009 3zM1 9a8 8 0 1114.32 4.906l3.387 3.387a1 1 0 01-1.414 1.414l-3.387-3.387A8 8 0 011 9z" clip-rule="evenodd"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Rechercher par nom ou mot-cle..."
+        [value]="keyword()"
+        (input)="keyword.set($any($event.target).value)"
+      />
+    </div>
+
+    <div class="filter-type-select">
+      <label for="foodTypeFilter">Type</label>
+      <select
+        id="foodTypeFilter"
+        [value]="selectedFoodType() || ''"
+        (change)="setFoodType($any($event.target).value)"
+      >
+        <option value="">Tout</option>
+        @for (type of foodTypes; track type) {
+          <option [value]="type">{{ foodTypeLabels[type] }}</option>
+        }
+      </select>
+    </div>
+
+  </div>
+
+  <!-- CONTENU -->
+  <main class="content">
+
+    @if (loading()) {
+      <div class="center-state">
+        <div class="spinner"></div>
+        <p>Chargement...</p>
+      </div>
+    } @else if (error()) {
+      <div class="center-state error">{{ error() }}</div>
+    } @else if (filteredConserves().length === 0) {
+      <div class="center-state empty">
+        <span class="empty-icon">&#x1FAD9;</span>
+        <p>Aucune conserve trouvee</p>
+        @if (keyword() || selectedFoodType()) {
+          <span class="empty-hint">Essayez de modifier les filtres</span>
+        }
+      </div>
+    } @else {
+
+      <div class="result-count">{{ filteredConserves().length }} conserve(s)</div>
+
+      <div class="grid">
+        @for (c of filteredConserves(); track c.id) {
+
+          <a
+            class="card"
+            [class]="'card--' + getStatus(c.expirationDate)"
+            [routerLink]="['/conserves', c.id]"
+            [attr.href]="'/conserves/' + c.id"
+            [attr.aria-label]="'Voir les details de ' + c.name"
+          >
+
+            <div class="card-header">
+              <h3 class="card-name">{{ c.name }}</h3>
+              <span class="status-badge" [class]="'badge--' + getStatus(c.expirationDate)">
+                @switch (getStatus(c.expirationDate)) {
+                  @case ('expired') { Perimee }
+                  @case ('soon') { Bientot }
+                  @default { OK }
+                }
+              </span>
+            </div>
+
+            <div class="dates">
+              <div class="date-row">
+                <span class="date-label">Peremption</span>
+                <span class="date-value" [class]="'text--' + getStatus(c.expirationDate)">
+                  {{ c.expirationDate | date:'dd/MM/yyyy' }}
+                </span>
+              </div>
+              <div class="date-row">
+                <span class="date-label">Ouverture</span>
+                @if (c.openingDate) {
+                  <span class="date-value">{{ c.openingDate | date:'dd/MM/yyyy' }}</span>
+                } @else {
+                  <span class="date-none">—</span>
+                }
+              </div>
+            </div>
+
+            @if (c.foodTypes.length) {
+              <div class="food-types">
+                @for (ft of c.foodTypes; track ft) {
+                  <span class="type-chip" [class]="'chip--' + ft.toLowerCase()">
+                    {{ foodTypeLabels[ft] }}
+                  </span>
+                }
+              </div>
+            }
+
+            @if (c.tags.length) {
+              <div class="tags">
+                @for (tag of c.tags; track tag.id) {
+                  <span class="tag-chip">#{{ tag.name }}</span>
+                }
+              </div>
+            }
+
+          </a>
+        }
+      </div>
+    }
+
+  </main>
+
+</div>

@@ -1,0 +1,27 @@
+<header class="navbar">
+
+  <a routerLink="/" class="navbar-brand" aria-label="Conserve Cloud - retour à l'accueil">
+    <img
+      class="logo"
+      src="/logo-conserve-cloud-tp.png"
+      alt=""
+      aria-hidden="true"
+    />
+    <span class="brand-name">Conserve Cloud</span>
+  </a>
+
+  <nav class="navbar-nav">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+      Mes conserves
+    </a>
+    <a routerLink="/add" routerLinkActive="active" class="nav-link nav-link--add">
+      + Ajouter
+    </a>
+  </nav>
+
+  <div class="navbar-user">
+    <span class="username">Bonjour, {{ user?.firstName }}</span>
+    <button class="btn-logout" (click)="logout()">Deconnexion</button>
+  </div>
+
+</header>

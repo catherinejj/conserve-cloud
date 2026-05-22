@@ -1,16 +1,6 @@
-<main class="app-shell">
-  <section class="status-panel">
-    <p class="eyebrow">Conserve Cloud</p>
-    <h1>Frontend connecte au backend</h1>
-    <p class="description">
-      Le front appelle <code>/api/health</code>, qui est proxyfie vers le service Kubernetes backend.
-    </p>
-
-    <div class="health-check" [class.is-ok]="healthStatus === 'ok'">
-      <span>Backend health</span>
-      <strong>{{ healthStatus }}</strong>
-    </div>
-  </section>
-
+@if (authService.isLoggedIn()) {
+  <app-navbar />
+}
+<main [class.with-navbar]="authService.isLoggedIn()">
   <router-outlet />
 </main>

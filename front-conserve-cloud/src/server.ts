@@ -16,9 +16,9 @@ const angularApp = new AngularNodeAppEngine();
 const backendUrl = process.env['BACKEND_URL'] || 'http://backend';
 
 /**
- * Proxy API calls to the backend service inside the Kubernetes namespace.
+ * Proxy API and uploads to the backend service inside the Kubernetes namespace.
  */
-app.use('/api', async (req, res, next) => {
+app.use(['/api', '/uploads'], async (req, res, next) => {
   try {
     const targetUrl = new URL(req.originalUrl, backendUrl);
     const response = await fetch(targetUrl, {

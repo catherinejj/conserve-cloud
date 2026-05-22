@@ -1,0 +1,134 @@
+<div class="add-wrapper">
+  <div class="add-card">
+
+    <div class="add-header">
+      <a [routerLink]="isEditMode ? ['/conserves', editId()] : ['/']" class="back-btn" aria-label="Retour">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+        </svg>
+        Retour
+      </a>
+      <div class="title-group">
+        <img class="logo" src="/logo-conserve-cloud-tp.png" alt="" aria-hidden="true" />
+        <h1>{{ isEditMode ? 'Modifier la conserve' : 'Nouvelle conserve' }}</h1>
+      </div>
+    </div>
+
+    @if (loadingConserve()) {
+      <div class="center-state">
+        <div class="upload-spinner"></div>
+        <p>Chargement de la conserve...</p>
+      </div>
+    } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+      <!-- Nom -->
+      <div class="field" [class.has-error]="name.invalid && name.touched">
+        <label for="name">Nom de la conserve <span class="req">*</span></label>
+        <input id="name" type="text" formControlName="name" placeholder="Ex : Tomates pelées" />
+        <span class="field-error" *ngIf="name.touched && name.hasError('required')">Requis.</span>
+      </div>
+
+      <!-- Dates -->
+      <div class="field" [class.has-error]="expirationDate.invalid && expirationDate.touched">
+        <label for="expirationDate">Date de péremption <span class="req">*</span></label>
+        <input id="expirationDate" type="date" formControlName="expirationDate" />
+        <span class="field-error" *ngIf="expirationDate.touched && expirationDate.hasError('required')">Requise.</span>
+      </div>
+
+      <div class="field">
+        <label for="openingDate">Date d'ouverture <span class="opt">(facultatif)</span></label>
+        <input id="openingDate" type="date" formControlName="openingDate" [max]="today" />
+      </div>
+
+      <!-- Types d'aliments -->
+      <div class="field" [class.has-error]="foodTypeError()">
+        <label>Type d'aliment <span class="req">*</span></label>
+        <div class="type-grid">
+          @for (type of foodTypes; track type) {
+            <button
+              type="button"
+              class="type-btn"
+              [class.active]="isSelected(type)"
+              [class]="isSelected(type) ? 'type-btn active chip--' + type.toLowerCase() : 'type-btn'"
+              (click)="toggleFoodType(type)"
+            >{{ foodTypeLabels[type] }}</button>
+          }
+        </div>
+        <span class="field-error" *ngIf="foodTypeError()">Selectionnez au moins un type.</span>
+      </div>
+
+      <!-- Mots-clés -->
+      <div class="field" [class.has-error]="rawKeywords.invalid && rawKeywords.touched">
+        <label for="rawKeywords">Mots-cles <span class="req">*</span></label>
+        <input id="rawKeywords" type="text" formControlName="rawKeywords" placeholder="tomate, bio, italie, san marzano" />
+        <span class="field-hint">Separes par des virgules — serviront a la recherche.</span>
+        <span class="field-error" *ngIf="rawKeywords.touched && rawKeywords.hasError('required')">Requis.</span>
+      </div>
+
+      <!-- Description -->
+      <div class="field">
+        <label for="description">Description <span class="opt">(facultatif)</span></label>
+        <textarea id="description" formControlName="description" rows="3" placeholder="Notes, recettes, conseils..."></textarea>
+      </div>
+
+      <!-- Photo -->
+      <div class="field">
+        <label>Photo <span class="opt">(facultatif)</span></label>
+
+        @if (!photoPreview()) {
+          <div
+            class="upload-zone"
+            (click)="fileInput.click()"
+            (dragover)="$event.preventDefault()"
+            (dragleave)="$event.preventDefault()"
+            (drop)="onDrop($event)"
+          >
+            @if (uploading()) {
+              <div class="upload-spinner"></div>
+              <p>Téléchargement...</p>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+              </svg>
+              <p>Glisser une photo ici<br/><span>ou cliquer pour choisir</span></p>
+              <p class="upload-hint">JPG, PNG, WEBP — max 5 Mo</p>
+            }
+          </div>
+        } @else {
+          <div class="photo-preview">
+            <img [src]="photoPreview()" alt="Aperçu" />
+            @if (uploading()) {
+              <div class="photo-overlay">
+                <div class="upload-spinner"></div>
+              </div>
+            } @else {
+              <button type="button" class="btn-remove-photo" (click)="removePhoto()" title="Supprimer la photo">
+                <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            }
+          </div>
+        }
+
+        <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+        <span class="field-error" *ngIf="uploadError()">{{ uploadError() }}</span>
+      </div>
+
+      <!-- Erreur serveur -->
+      <div class="server-error" *ngIf="error()">{{ error() }}</div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <a [routerLink]="isEditMode ? ['/conserves', editId()] : ['/']" class="btn-cancel">Annuler</a>
+        <button type="submit" class="btn-submit" [disabled]="loading() || uploading()">
+          <span *ngIf="!loading()">{{ isEditMode ? 'Enregistrer les modifications' : 'Enregistrer' }}</span>
+          <span *ngIf="loading()" class="spinner"></span>
+        </button>
+      </div>
+
+    </form>
+    }
+  </div>
+</div>

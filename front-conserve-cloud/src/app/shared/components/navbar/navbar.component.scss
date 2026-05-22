@@ -1,0 +1,125 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  background: #dcefe3;
+  border-bottom: 1px solid #b8d4c2;
+  color: #17351f;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  color: #17351f;
+  text-decoration: none;
+  border-radius: 0.5rem;
+
+  &:hover {
+    color: #17351f;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .brand-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: currentColor;
+  }
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.nav-link {
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #245637;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.18em;
+  border: 1px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover {
+    background: #c7e3d0;
+    color: #17351f;
+    text-decoration-color: currentColor;
+  }
+
+  &.active {
+    background: #ffffff;
+    border-color: #8db99b;
+    color: #17351f;
+    font-weight: 700;
+    text-decoration-color: currentColor;
+  }
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  margin-left: auto;
+
+  .username {
+    font-size: 0.9rem;
+    color: #2f4b38;
+  }
+}
+
+.btn-logout {
+  min-height: 40px;
+  padding: 0.45rem 0.9rem;
+  background: #ffffff;
+  color: #245637;
+  border: 1px solid #8db99b;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+
+  &:hover {
+    background: #245637;
+    color: #ffffff;
+    border-color: #245637;
+  }
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    position: static;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .navbar-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .username { display: none; }
+}

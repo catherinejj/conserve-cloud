@@ -1,0 +1,84 @@
+// ──────────────────────────────────────────────────────────────
+//  schema.prisma — Application de gestion de conserves
+// ──────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ──────────────────────────────────────────────────────────────
+//  Énumération : types d'aliments contenus dans une conserve
+//  (légume, fruit, viande, poisson, autre)
+// ──────────────────────────────────────────────────────────────
+enum FoodType {
+  LEGUME
+  FRUIT
+  VIANDE
+  POISSON
+  AUTRE
+}
+
+// ──────────────────────────────────────────────────────────────
+//  Utilisateur
+//  Connexion via email + mot de passe.
+// ──────────────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  birthDate DateTime @db.Date
+  email     String   @unique
+  password  String   // toujours stocker un HASH (bcrypt / argon2), jamais en clair
+
+  conserves Conserve[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ──────────────────────────────────────────────────────────────
+//  Conserve
+// ──────────────────────────────────────────────────────────────
+model Conserve {
+  id             String     @id @default(uuid())
+  name           String
+  expirationDate DateTime   @db.Date
+  openingDate    DateTime?  @db.Date   // facultatif
+
+  description    String?               // facultatif (texte libre)
+  photoUrl       String?               // facultatif — lien vers le fichier image
+                                        // (l'image est stockée dans un dossier,
+                                        //  la BDD ne garde que le chemin/URL)
+
+  rawKeywords    String                // champ libre saisi par l'utilisateur
+                                        // (ex : "tomate, bio, italie")
+
+  foodTypes      FoodType[]            // au moins un — contrôle fait côté application
+
+  tags           Tag[]      @relation("ConserveTags")
+
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+// ──────────────────────────────────────────────────────────────
+//  Tag (mot-clé normalisé)
+//  Construit à partir du champ rawKeywords.
+//  Relation N-N : un tag peut être réutilisé sur plusieurs conserves,
+//  une conserve peut avoir plusieurs tags.
+// ──────────────────────────────────────────────────────────────
+model Tag {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  conserves Conserve[] @relation("ConserveTags")
+  createdAt DateTime   @default(now())
+}

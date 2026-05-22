@@ -1,0 +1,124 @@
+<div class="detail-page">
+
+  <a routerLink="/" class="back-link">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+    </svg>
+    Mes conserves
+  </a>
+
+  @if (loading()) {
+    <div class="center-state">
+      <div class="spinner"></div>
+      <p>Chargement...</p>
+    </div>
+  } @else if (error()) {
+    <div class="center-state error">{{ error() }}</div>
+  } @else {
+    @if (conserve(); as c) {
+
+      <div class="detail-layout" [class.has-photo]="c.photoUrl">
+
+        @if (c.photoUrl) {
+          <div class="detail-photo">
+            <img [src]="c.photoUrl" [alt]="c.name" />
+          </div>
+        }
+
+        <div class="detail-info">
+
+          <div class="info-header">
+            <h1 class="conserve-name">{{ c.name }}</h1>
+            @if (getStatus(c.expirationDate) !== 'ok') {
+              <span class="status-badge" [class]="'badge--' + getStatus(c.expirationDate)">
+                @switch (getStatus(c.expirationDate)) {
+                  @case ('expired') { Perimee }
+                  @case ('soon') { Expire bientot }
+                }
+              </span>
+            }
+          </div>
+
+          <div class="detail-actions" aria-label="Actions sur la conserve">
+            <a class="btn-edit" [routerLink]="['/conserves', c.id, 'edit']">Modifier la conserve</a>
+            <button type="button" class="btn-delete" (click)="deleteConserve()" [disabled]="deleting()">
+              {{ deleting() ? 'Suppression...' : 'Supprimer la conserve' }}
+            </button>
+          </div>
+
+          <div class="info-section">
+            <h2 class="section-title">Dates</h2>
+            <div class="dates-grid">
+              <div class="date-item">
+                <span class="date-label">Date de péremption</span>
+                <span class="date-value" [class]="'text--' + getStatus(c.expirationDate)">
+                  {{ formatDate(c.expirationDate) }}
+                </span>
+              </div>
+              <div class="date-item">
+                <span class="date-label">Date d'ouverture</span>
+                @if (c.openingDate) {
+                  <span class="date-value">{{ formatDate(c.openingDate) }}</span>
+                } @else {
+                  <span class="date-none">Non ouverte</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <h2 class="section-title">Types d'aliments</h2>
+            @if (c.foodTypes.length) {
+              <div class="chips-row">
+                @for (ft of c.foodTypes; track ft) {
+                  <span class="type-chip" [class]="'chip--' + ft.toLowerCase()">
+                    {{ foodTypeLabels[ft] || ft }}
+                  </span>
+                }
+              </div>
+            } @else {
+              <p class="empty-detail">Aucun type renseigné.</p>
+            }
+          </div>
+
+          @if (c.tags.length) {
+            <div class="info-section">
+              <h2 class="section-title">Tags</h2>
+              <div class="chips-row">
+                @for (tag of c.tags; track tag.id) {
+                  <span class="tag-chip">#{{ tag.name }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (c.rawKeywords) {
+            <div class="info-section">
+              <h2 class="section-title">Mots-clés</h2>
+              <p class="keywords">{{ c.rawKeywords }}</p>
+            </div>
+          } @else {
+            <div class="info-section">
+              <h2 class="section-title">Mots-clés</h2>
+              <p class="empty-detail">Aucun mot-clé renseigné.</p>
+            </div>
+          }
+
+          @if (c.description) {
+            <div class="info-section">
+              <h2 class="section-title">Description</h2>
+              <p class="description">{{ c.description }}</p>
+            </div>
+          } @else {
+            <div class="info-section">
+              <h2 class="section-title">Description</h2>
+              <p class="empty-detail">Aucune description renseignée.</p>
+            </div>
+          }
+
+        </div>
+      </div>
+    }
+  }
+
+</div>
